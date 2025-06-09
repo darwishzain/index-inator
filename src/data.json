@@ -1,5 +1,16 @@
 {
     "directory" : [
-        "/home/cendol/Downloads/watch"
-    ]
+        "/home/cendol/Downloads/watch",
+        "/media/cendol/hacks/entertainment/",
+        "/media/cendol/kerepekpisang/entertainment/"
+    ],
+    "ignore":["watch","copy"],
+    "language":{
+        "CH":"Chinese",
+        "EN":"English",
+        "ID":"Indonesia",
+        "JP":"Japanese",
+        "MS":"Malay"
+    },
+    "output":"../../export/index-inator/"
 }

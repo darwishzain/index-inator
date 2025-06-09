@@ -1,8 +1,7 @@
-import json,os
+import json,os,re
 
 def fullpath(relative_path):
-    directory = os.path.dirname(__file__)
-    return os.path.join(directory, relative_path)
+    return(os.path.join(os.path.dirname(__file__), relative_path))
 
 def openjson(filename):
     file = fullpath(filename)
@@ -10,22 +9,53 @@ def openjson(filename):
         jsondata = json.load(f)
     return(jsondata)
 
-directory = openjson('data.json')
+config = openjson('data.json')
 
 class indexinator:
-    def __init__(self, directory):
-        self.directory = directory
+    def __init__(self):
+        self.filelist = []
+        self.directory = []
 
-    def listfiles(self):
-        try:
-            return os.listdir(self.directory)
-        except FileNotFoundError:
-            return f"Directory {self.directory} not found."
-        except PermissionError:
-            return f"Permission denied for directory {self.directory}."
+    def list(self):
+        for directory in config['directory']:
+            if os.path.exists(directory):
+                print(directory)
+                for item in os.listdir(directory):
+                    if item == 'watch' or item == 'copy':
+                        continue
+                    if os.path.isdir(os.path.join(directory,item)) :
+                        self.info(item,"Folder")
+                    else :
+                        self.info(item,"Media")
+    
+    def info(self,item,type):
+        info = []
+        symbols = [ "#","$","(",")","[","]" ]
+        #language = re.search(r"(){2}",item)
+        season = re.search(r"(\d+)$", item)
+        year = re.search(r"(\d{4})", item)
+        count = re.search(r"(\d+)#", item)
+        #language = re.search(r"[({2})]", item)
+        #if language: info.append("Bahasa: " + language.group(1))
+        
+        item = re.sub(r"(\d+)$","", item)#S
+        item = re.sub(r"(\d+)#","", item)#C
+        item = re.sub(r"(\d{4})","", item)#Y
+        #item = re.sub(r"[()]","", item)
+        item = re.sub(r"\(","", item)
+        item = re.sub(r"\)","", item)
+        item = re.sub(r"\$","", item)
+        item = re.sub(r"\#","", item)
+        item = item.strip()
+
+        info.append(type + ": "+ item)
+        if season: info.append("Musim: " + season.group(1))
+        if count: info.append("Kandungan:" + count.group(1))
+        if year: info.append("Tahun: " + year.group(1))
+
+        print("\n".join(info))
 
 if __name__ == "__main__":
-    indexer = indexinator(directory)
-    files = indexer.listfiles()
-    print(files)
+    indexer = indexinator()
+    indexer.list()
 
