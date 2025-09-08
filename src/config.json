@@ -1,0 +1,8 @@
+{
+    "read": ["/mnt/potato/Ark/read","/mnt/ubikentang/read"],
+    "watch": ["/mnt/cupcake/entertainment","/mnt/potato/Ark/entertainment","/mnt/ubikentang/entertainment"],
+    "listen": ["/mnt/potato/Ark/music"],
+    "directory": [],
+    "ignore": [],
+    "language": {}
+}
